@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Random;
+import java.util.Scanner;
 
 import com.config.YoucodeGotTalent.Config;
 import com.method.YoucodeGotTalent.Methods;
@@ -38,13 +39,12 @@ public class UserController {
 	public void AddUser(String first_name,String last_name,String email,String phone) {
 		PreparedStatement stmt;
 		ResultSet rs;
-		Statement stmt2;
 		try {
 			String sql = "INSERT INTO users (user_id,first_name,last_name,email,phone) VALUES(?,?,?,?,?)";
 			Methods mt = new Methods();
 			stmt = config.connect().prepareStatement(sql);
 			Long id =mt.randomId();
-			System.out.println(id);
+//			System.out.println(id);
 			stmt.setLong(1, id);
 			stmt.setString(2, first_name);
 			stmt.setString(3, last_name);
@@ -57,7 +57,6 @@ public class UserController {
 			
 			stmt.setLong(1, id);
 			rs = stmt.executeQuery();
-//			rs.last();
 			if(rs.next()) {
 				System.out.println("votre compte est bien enregistre votre information est :\nnom : "+rs.getString("first_name")+
 					"\nprenom : "+rs.getString("last_name")+"\nemail : "+rs.getString("email")+"\nphone : "+rs.getString("phone")+
@@ -70,7 +69,6 @@ public class UserController {
 			
 			rs=null;
 			stmt= null;
-			stmt2 = null;
 		}
 		
 		
@@ -78,14 +76,64 @@ public class UserController {
 	
 	
 	// find user by id
-//	public User findUserById() {
-//		//return user
-//	}
+	public void findUserById() {
+		PreparedStatement stmt;
+		ResultSet rs;
+		Scanner inp = new Scanner(System.in);
+		System.out.println("entre votre id : ");
+		long id = inp.nextLong();
+		try {
+			String sql = "SELECT * FROM users WHERE user_id = ?";
+			stmt = config.connect().prepareStatement(sql);
+			stmt.setLong(1, id);
+			rs = stmt.executeQuery();
+			if(rs.next()) {
+				System.out.println("bonjour : "+rs.getString("first_name")+
+						"\nvoici votre information prenom : "+rs.getString("last_name")+"\nemail : "+rs.getString("email")+"\nphone : "+rs.getString("phone")+
+						"\nsi vous avez un besoin de modifier votre information tapez 1 pour participe tapez 2");
+				int choix = inp.nextInt();
+				switch (choix) {
+				case 1:
+					System.out.println("first name");
+					String first_name = inp.next();
+					System.out.println("last name");
+					String last_name = inp.next();
+					System.out.println("email");
+					String email = inp.next();
+					System.out.println("phone");
+					String phone = inp.next();
+					sql  = "UPDATE users SET first_name =?, last_name = ?,email = ?,phone = ? WHERE user_id = ?";
+					stmt=config.connect().prepareStatement(sql);
+					stmt.setString(1, first_name);
+					stmt.setString(2, last_name);
+					stmt.setString(3, email);
+					stmt.setString(4, phone);
+					stmt.setLong(5, id);
+					stmt.executeUpdate();
+					break;
+
+				default:
+					System.out.println("error");
+					break;
+				}
+			}else{
+				System.out.println("votre id est incorrect");
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			
+			rs=null;
+			stmt= null;
+		}
+//		return user;
+	}
 	// update user by id 
 	
-	public void updateUser() {
-	
-	}
+//	public void updateUser() {
+//	
+//	}
 	
 
 }

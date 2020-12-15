@@ -1,11 +1,11 @@
 package com.App.YoucodeGotTalent;
 
 import java.sql.SQLException;
-import java.util.Random;
+//import java.util.Random;
 import java.util.Scanner;
 
 import com.controller.YoucodeGotTalent.UserController;
-import com.method.YoucodeGotTalent.Methods;
+//import com.youcodeGotTalent.method.Methods;
 
 public class App {
 
@@ -14,6 +14,7 @@ public class App {
 
 		Scanner menu = new Scanner(System.in);
 		UserController userController = new UserController();
+		userController.findUserById();
 		System.out.println("first name");
 		String first_name = menu.next();
 		System.out.println("last name");
