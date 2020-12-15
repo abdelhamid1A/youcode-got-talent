@@ -79,6 +79,7 @@ public class UserController {
 	public void findUserById() {
 		PreparedStatement stmt;
 		ResultSet rs;
+		@SuppressWarnings("resource")
 		Scanner inp = new Scanner(System.in);
 		System.out.println("entre votre id : ");
 		long id = inp.nextLong();
@@ -110,6 +111,9 @@ public class UserController {
 					stmt.setString(4, phone);
 					stmt.setLong(5, id);
 					stmt.executeUpdate();
+					break;
+				case 2:
+					
 					break;
 
 				default:

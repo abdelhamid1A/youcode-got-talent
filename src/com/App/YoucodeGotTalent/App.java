@@ -4,27 +4,33 @@ import java.sql.SQLException;
 //import java.util.Random;
 import java.util.Scanner;
 
+import com.controller.YoucodeGotTalent.AdminController;
 import com.controller.YoucodeGotTalent.UserController;
+import com.models.YoucodeGotTalent.User;
 //import com.youcodeGotTalent.method.Methods;
 
 public class App {
 
 	public static void main(String[] args) throws SQLException {
-		 
-
+		AdminController adminController = new AdminController();
+		adminController.adminConnection();
 		Scanner menu = new Scanner(System.in);
-		UserController userController = new UserController();
-		userController.findUserById();
-		System.out.println("first name");
-		String first_name = menu.next();
-		System.out.println("last name");
-		String last_name = menu.next();
-		System.out.println("email");
-		String email = menu.next();
 		System.out.println("phone");
 		String phone = menu.next();
-		userController.AddUser(first_name, last_name, email, phone);
 		
+
+//		UserController userController = new UserController();
+//		userController.findUserById();
+//		System.out.println("first name");
+//		String first_name = menu.next();
+//		System.out.println("last name");
+//		String last_name = menu.next();
+//		System.out.println("email");
+//		String email = menu.next();
+//		System.out.println("phone");
+//		phone = menu.next();
+//		userController.AddUser(first_name, last_name, email, phone);
+//		
 //		userController.display();
 //		int back=0;
 //		

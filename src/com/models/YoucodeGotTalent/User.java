@@ -1,5 +1,8 @@
 package com.models.YoucodeGotTalent;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class User {
 	private long Id;
 	private String lastName;
@@ -12,7 +15,10 @@ public class User {
 	this.firstName = firstName;
 	this.phone = phone;
 		}
-// Getters and Setters
+	public User() {
+			
+		}
+	// Getters and Setters
 	public long getId() {
 		return Id;
 	}
@@ -44,7 +50,9 @@ public class User {
 	}
 
 	public void setPhone(String phone) {
-		this.phone = phone;
+		
+			this.phone = phone;
+
 	}
 //methods	
 	// Tostring 
