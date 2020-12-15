@@ -44,19 +44,26 @@ public class UserController {
 			Methods mt = new Methods();
 			stmt = config.connect().prepareStatement(sql);
 			Long id =mt.randomId();
+			System.out.println(id);
 			stmt.setLong(1, id);
 			stmt.setString(2, first_name);
 			stmt.setString(3, last_name);
 			stmt.setString(4, email);
 			stmt.setString(5, phone);
 			stmt.executeUpdate();
-			sql = "SELECT * FROM users";
-			stmt2 = config.connect().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-			rs = stmt2.executeQuery(sql);
-			rs.last();
-			System.out.println("votre compte est bien enregistre votre information est :\nnom : "+rs.getString("first_name")+
+			
+			sql = "SELECT * FROM users WHERE user_id = ?";
+			stmt = config.connect().prepareStatement(sql);
+			
+			stmt.setLong(1, id);
+			rs = stmt.executeQuery();
+//			rs.last();
+			if(rs.next()) {
+				System.out.println("votre compte est bien enregistre votre information est :\nnom : "+rs.getString("first_name")+
 					"\nprenom : "+rs.getString("last_name")+"\nemail : "+rs.getString("email")+"\nphone : "+rs.getString("phone")+
 					"\nId : "+rs.getLong("user_id")+" enregistre votre id pour participe");
+			}
+			
 		} catch (SQLException e) {
 			e.getMessage();
 		}finally {
