@@ -13,6 +13,7 @@ public class App {
 
 	public static void main(String[] args) throws SQLException {
 		AdminController adminController = new AdminController();
+		adminController.getAll();
 //		   methode logout
 //		adminController.logout();
 //		   methode verify if admin connected or no

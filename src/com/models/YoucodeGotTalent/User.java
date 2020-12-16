@@ -7,12 +7,14 @@ public class User {
 	private long Id;
 	private String lastName;
 	private String firstName;
+	private String email;
 	private String phone;
 // Constructor
-		public User(long id, String lastName, String firstName, String phone) {
+		public User(long id, String lastName, String firstName,String email, String phone) {
 	Id = id;
 	this.lastName = lastName;
 	this.firstName = firstName;
+	this.email = email;
 	this.phone = phone;
 		}
 	public User() {
@@ -44,6 +46,14 @@ public class User {
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
+	
+	public String getemail() {
+		return email;
+	}
+
+	public void setemail(String email) {
+		this.email = email;
+	}
 
 	public String getPhone() {
 		return phone;
@@ -58,7 +68,7 @@ public class User {
 	// Tostring 
 	@Override
 	public String toString() {
-		return "User [Id=" + Id + ", lastName=" + lastName + ", firstName=" + firstName + ", phone=" + phone + "]";
+		return "User [Id=" + Id + ", lastName=" + lastName + ", firstName=" + firstName + ",email = "+email+" phone=" + phone + "]";
 	}
 
 }

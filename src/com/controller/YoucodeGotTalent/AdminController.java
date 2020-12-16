@@ -5,10 +5,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import com.config.YoucodeGotTalent.Config;
 import com.models.YoucodeGotTalent.Participation;
+import com.models.YoucodeGotTalent.User;
 
 
 public class AdminController {
@@ -92,17 +94,37 @@ public class AdminController {
 	public Boolean verifyConnection() throws SQLException {
 		
 			
-				String sql = "SELECT * FROM admin_session WHERE id_admin = 15970010";
-				PreparedStatement stmt;
-				stmt = config.connect().prepareStatement(sql);
-				ResultSet rs = stmt.executeQuery();
-				rs.next();
-				Boolean etat = rs.getBoolean("is_connected");
-				return etat;
-				
+		String sql = "SELECT * FROM admin_session WHERE id_admin = 15970010";
+		PreparedStatement stmt;
+		stmt = config.connect().prepareStatement(sql);
+		ResultSet rs = stmt.executeQuery();
+		rs.next();
+		Boolean etat = rs.getBoolean("is_connected");
+		return etat;
 		
 	
+	}
+	
+	public  ArrayList<User> getAll() throws SQLException {
 		
+		ArrayList<User> usersList = new ArrayList<>();
+		
+		String sql = "SELECT * FROM users";
+		PreparedStatement stmt = config.connect().prepareStatement(sql);
+		ResultSet rs = stmt.executeQuery();
+		
+		while(rs.next()) {
+
+			User user  = new User(rs.getLong("user_id"),rs.getString("last_name"),rs.getString("first_name"),rs.getString("email"),rs.getString("phone"));
+			usersList.add(user);
+			
+		}
+		
+		for(User list: usersList) {
+	        System.out.println(list.toString());
+	    }
+		
+		return usersList;
 		
 	}
 	// find participaions 
