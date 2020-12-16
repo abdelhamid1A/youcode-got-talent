@@ -106,26 +106,29 @@ public class AdminController {
 	}
 	
 	public  ArrayList<User> getAll() throws SQLException {
-		
 		ArrayList<User> usersList = new ArrayList<>();
-		
-		String sql = "SELECT * FROM users";
-		PreparedStatement stmt = config.connect().prepareStatement(sql);
-		ResultSet rs = stmt.executeQuery();
-		
-		while(rs.next()) {
-
-			User user  = new User(rs.getLong("user_id"),rs.getString("last_name"),rs.getString("first_name"),rs.getString("email"),rs.getString("phone"));
-			usersList.add(user);
+		if(verifyConnection()==true) {
+			System.out.println("it s connect");
+			
+			String sql = "SELECT * FROM users";
+			PreparedStatement stmt = config.connect().prepareStatement(sql);
+			ResultSet rs = stmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				User user  = new User(rs.getLong("user_id"),rs.getString("last_name"),rs.getString("first_name"),rs.getString("email"),rs.getString("phone"));
+				usersList.add(user);
+				
+			}
+			
+			for(User list: usersList) {
+				System.out.println(list.toString());
+			}
+			
+//			return usersList;
 			
 		}
-		
-		for(User list: usersList) {
-	        System.out.println(list.toString());
-	    }
-		
 		return usersList;
-		
 	}
 	// find participaions 
 //	  public List<Participation> findAllParticipation(){
