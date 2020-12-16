@@ -13,6 +13,11 @@ public class App {
 
 	public static void main(String[] args) throws SQLException {
 		AdminController adminController = new AdminController();
+//		   methode logout
+//		adminController.logout();
+//		   methode verify if admin connected or no
+//		adminController.verifyConnection();
+//		System.out.println(adminController.verifyConnection());
 		adminController.adminConnection();
 		Scanner menu = new Scanner(System.in);
 		System.out.println("phone");
