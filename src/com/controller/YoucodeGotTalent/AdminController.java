@@ -37,23 +37,17 @@ public class AdminController {
 	}
 	
 	
-	
-	
-	// find all users
-//	public List<user> findAllUser(){
-//	}
+
 	// admin connection 
 	public void adminConnection() {
 		try {
 			Statement stmt=null;
 			ResultSet rs= null;
-			@SuppressWarnings("resource")
 			Scanner inp = new Scanner(System.in);
 			System.out.println("entre votre email");
 			String email = inp.nextLine();
 			System.out.println("entre votre mot de passe");
 			String password = inp.nextLine();
-//			SELECT admins.password, users.email FROM admins INNER JOIN users ON admins.admin_id = users.user_id
 			String sql = "SELECT admins.admin_id,admins.password, users.email FROM admins INNER JOIN users ON admins.admin_id = users.user_id";
 			stmt = config.connect().createStatement();
 			rs= stmt.executeQuery(sql);
@@ -104,7 +98,7 @@ public class AdminController {
 		
 	
 	}
-	
+//	start getAll
 	public  ArrayList<User> getAll() throws SQLException {
 		ArrayList<User> usersList = new ArrayList<>();
 		if(verifyConnection()==true) {
@@ -121,26 +115,110 @@ public class AdminController {
 				
 			}
 			
-			for(User list: usersList) {
-				System.out.println(list.toString());
-			}
-			
-//			return usersList;
+//			for(User list: usersList) {
+//				System.out.println(list.toString());
+//			}
+	
 			
 		}
 		return usersList;
 	}
-	// find participaions 
-//	  public List<Participation> findAllParticipation(){
-//		 // return //List
-//	  }
-	// find participation by email 
-//	  public Participation findParticipationByEmail() {
-//		  //return Participation;
-//	  }
-	// validate participation
-	  public void validateParticipation() {
-		  //.....
+//	end getAll
+	
+	
+//	start get all participation
+	public  ArrayList<Participation> getAllParticipation() throws SQLException {
+		ArrayList<Participation> participationList = new ArrayList<>();
+		if(verifyConnection()==true) {
+			//System.out.println("it s connect");
+			
+			String sql = "SELECT * FROM `participation`";
+			PreparedStatement stmt = config.connect().prepareStatement(sql);
+			ResultSet rs = stmt.executeQuery();
+			
+			while(rs.next()) {
+				Participation participation  = new Participation(rs.getLong("user_id"), rs.getLong("id_category"), rs.getString("description"), rs.getTimestamp("show_start_time"), 
+						rs.getTimestamp("show_end_time"), rs.getString("attached_file"), rs.getBoolean("is_accepted"));
+				participationList.add(participation);
+				
+			}
+			
+			
+		}
+		return participationList;
+	}
+	
+	
+//	end get all participation
+	
+	
+//	start find user by email
+	
+	  public Participation findParticipationByEmail(String email) throws SQLException {
+			String sql = "select * FROM `participation` INNER JOIN users ON participation.user_id= users.user_id and users.email ='" + email +"'";
+					
+			PreparedStatement stmt = config.connect().prepareStatement(sql);
+			ResultSet rs = stmt.executeQuery();
+			rs.next();
+				
+				Participation participation  = new Participation(rs.getLong("user_id"), rs.getLong("id_category"), rs.getString("description"), rs.getTimestamp("show_start_time"), 
+						rs.getTimestamp("show_end_time"), rs.getString("attached_file"), rs.getBoolean("is_accepted"));
+				
+				
+			return  participation;
+			
 	  }
+
+	// validate participation
+      public void validateParticipation(long UserID) throws SQLException {
+         String sql = "UPDATE participation SET is_accepted = '1' WHERE participation.user_id =" + UserID ;
+            PreparedStatement stmt = config.connect().prepareStatement(sql);
+            stmt.executeUpdate();
+
+      }
+		
+//	end find user by email
+      
+      public long adminConnection(String email, String password) {
+  		long idFD=0;
+  		try {
+  			
+  			Statement stmt=null;
+  			ResultSet rs= null;
+  			String sql = "SELECT admins.admin_id,admins.password, users.email FROM admins INNER JOIN users ON admins.admin_id = users.user_id";
+  			stmt = config.connect().createStatement();
+  			rs= stmt.executeQuery(sql);
+  			while(rs.next()) {
+  				String emailFD = rs.getString("email");
+  				String passwordlFD = rs.getString("password");
+  				idFD = rs.getLong("admin_id");
+  				if((emailFD.equals(email)) && (passwordlFD.equals(password))) {
+  					sql = "UPDATE admin_session set is_connected = 1 WHERE id_admin = ?";
+  					PreparedStatement stmt2 = config.connect().prepareStatement(sql);
+  					stmt2.setLong(1,idFD);
+  					stmt2.executeUpdate();
+  					System.out.println("vous etez connectez :)");
+  				}
+
+
+  			}
+  				
+  		} catch (Exception e) {
+  			e.getMessage();
+  		}
+  		return idFD;
+  		
+  	}
+      
+      public int isConnected(long id ) throws SQLException{
+  		int res =0;
+  		String sql = "select * from admin_session WHERE id_admin = "+ id +" and is_connected = 1 ";
+  		Statement stmt = config.connect().createStatement();
+  		ResultSet rs= stmt.executeQuery(sql);
+  		if (rs.isBeforeFirst()) {
+  			res=1;
+  		}
+  		return res;
+  	}
 
 }

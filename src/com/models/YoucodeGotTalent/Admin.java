@@ -5,7 +5,7 @@ public class Admin extends User {
 	private String Password;
 // Constructor
 	public Admin(long id, String lastName, String firstName, String phone, String Password) {
-		super(id, lastName, firstName, phone);
+//		super(id, lastName, firstName, phone);
 		this.Password = Password;
 	}
 // Getters and setters

@@ -6,17 +6,26 @@ import java.sql.SQLException;
 //import java.util.Random;
 import java.util.Scanner;
 
+//import java.util.*;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
+
 import com.controller.YoucodeGotTalent.AdminController;
 import com.controller.YoucodeGotTalent.ParticipationController;
 import com.controller.YoucodeGotTalent.UserController;
+import com.method.YoucodeGotTalent.Methods;
+import com.models.YoucodeGotTalent.Participation;
 import com.models.YoucodeGotTalent.User;
 //import com.youcodeGotTalent.method.Methods;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;  
+//import com.method.YoucodeGotTalent.Methods;
+//import java.sql.Timestamp;
+//import java.text.SimpleDateFormat;  
+
 
 public class App {
 
-	public static void main(String[] args) throws SQLException {
+	public static void main(String[] args) throws SQLException, AddressException, MessagingException {
 //		AdminController adminController = new AdminController();
 //		ParticipationController partie = new ParticipationController();
 //		partie.addParticipation();
@@ -123,30 +132,56 @@ public class App {
 		break;
 		case 2 :
 			AdminController admin = new AdminController();
-			if (admin.verifyConnection()==true) {
+			//System.out.println(admin.adminConnection());
+			System.out.println("entre votre email");
+			String email1 = menu.next();
+			System.out.println("entre votre mot de passe");
+			String password = menu.next();
+			if (admin.isConnected(admin.adminConnection(email1, password))==1) {
 			while (back1) { 
 			    vBack = true;
+			    Methods method = new Methods();
 				 System.out.println("1- Find all users");
 				 System.out.println("2- find all participation");
 				 System.out.println("3- find  participation by email");
 				 System.out.println("4- log out ");
-				 int s1 = menu.nextInt();
+				 int s1;
+				s1 = menu.nextInt();
 				 	switch(s1) {
 				 	case 1 : 
 				 		for(User list: admin.getAll()) {
 						System.out.println(list.toString());
 					}
 				 		break;
-				 	case 2 : System.out.println(" all participation");
+				 	case 2 : for(Participation list: admin.getAllParticipation()) {
+						System.out.println(list.toString());}
 				 		break;
-				 	case 3 : System.out.println(" participation by email");
+				 	case 3 :System.out.println("insert your email");
+			        boolean a = false;
+			        String email;
+			       do { 
+			    	   email = menu.next();
+			       		a = method.validateEmail(email);
+			       		if (!a) {
+			        	System.out.println("InValid email");
+			       		}
+			           
+			        } while(a==false);
+			       
+				 	
+				 		System.out.println(admin.findParticipationByEmail(email).toString());
 				 			 System.out.println(" you want to validate this participation ");
 				 			 System.out.println(" 1- YES");
 				 			 System.out.println(" 2- NO");
 				 			 int v = menu.nextInt();
 								while (vBack) {
 										switch(v) {
-										case 1 : System.out.println("  validated");
+										case 1 : 
+													
+													admin.validateParticipation(admin.findParticipationByEmail(email).getIdUser());
+													
+											 		method.SendMail( "smtp.gmail.com", "465", "mahdisouilmi95@gmail.com", "************", email, "validation participation", "hello,congratulations we accepted your participation ");
+											System.out.println("  validated");
 										vBack = false;
 										break;
 										case 2 : System.out.println("  did not valited");
@@ -156,14 +191,16 @@ public class App {
 										 			}
 										 } 
 									break;
-										case 4 : back1=false ;
+										case 4 : back1=false;
+										admin.logout();
+										break;
 										} 
 		
 		
 	} 
-			}else admin.adminConnection();
+			}else System.out.println(" ERROR ");
 		break;
-	default : System.out.println("choose from the betwen the numbers below ! ");	
+	default : System.out.println("choose from the betwen the numbers below ! ");
 }
 			}
 

@@ -44,7 +44,6 @@ public class UserController {
 			Methods mt = new Methods();
 			stmt = config.connect().prepareStatement(sql);
 			Long id =mt.randomId();
-//			System.out.println(id);
 			stmt.setLong(1, id);
 			stmt.setString(2, first_name);
 			stmt.setString(3, last_name);
@@ -150,10 +149,7 @@ public class UserController {
 			}
 	
 	
-			
-			
-			
-			
+		
 
 	// update user by id 
 	
