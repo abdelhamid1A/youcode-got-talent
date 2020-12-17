@@ -131,78 +131,82 @@ public class App {
 		}while(back2);
 		break;
 		case 2 :
-			AdminController admin = new AdminController();
-			//System.out.println(admin.adminConnection());
-			System.out.println("entre votre email");
-			String email1 = menu.next();
-			System.out.println("entre votre mot de passe");
-			String password = menu.next();
-			if (admin.isConnected(admin.adminConnection(email1, password))==1) {
-			while (back1) { 
-			    vBack = true;
-			    Methods method = new Methods();
-				 System.out.println("1- Find all users");
-				 System.out.println("2- find all participation");
-				 System.out.println("3- find  participation by email");
-				 System.out.println("4- log out ");
-				 int s1;
-				s1 = menu.nextInt();
-				 	switch(s1) {
-				 	case 1 : 
-				 		for(User list: admin.getAll()) {
-						System.out.println(list.toString());
-					}
-				 		break;
-				 	case 2 : for(Participation list: admin.getAllParticipation()) {
-						System.out.println(list.toString());}
-				 		break;
-				 	case 3 :System.out.println("insert your email");
-			        boolean a = false;
-			        String email;
-			       do { 
-			    	   email = menu.next();
-			       		a = method.validateEmail(email);
-			       		if (!a) {
-			        	System.out.println("InValid email");
-			       		}
-			           
-			        } while(a==false);
-			       
-				 	
-				 		System.out.println(admin.findParticipationByEmail(email).toString());
-				 			 System.out.println(" you want to validate this participation ");
-				 			 System.out.println(" 1- YES");
-				 			 System.out.println(" 2- NO");
-				 			 int v = menu.nextInt();
-								while (vBack) {
-										switch(v) {
-										case 1 : 
-													
-													admin.validateParticipation(admin.findParticipationByEmail(email).getIdUser());
-													
-											 		method.SendMail( "smtp.gmail.com", "465", "mahdisouilmi95@gmail.com", "************", email, "validation participation", "hello,congratulations we accepted your participation ");
-											System.out.println("  validated");
+			String email1;
+ 			Methods method = new Methods();
+				boolean a;
+						do { System.out.println(" Enter your Email adress :");
+							email1 = menu.next();
+							a = method.validateEmail(email1);
+								if (!a) {
+									System.out.println(ErrorMessages.EMAILINVALID.SHOW());
+								}
+
+						} while(a==false);
+ 			AdminController admin = new AdminController();
+ 			System.out.println(" Enter you password :");
+ 			String password = menu.next();
+ 			if (admin.isConnected(admin.adminConnection(email1, password))==1) {
+ 				while (back1) { 
+ 					vBack = true;
+ 					//Methods method = new Methods();
+ 					System.out.println("1- Find all users");
+ 					System.out.println("2- Find all participation");
+ 					System.out.println("3- Find  participation by email");
+ 					System.out.println("4- Log out ");
+ 					int s1;
+ 					s1 = menu.nextInt();
+ 						switch(s1) {
+ 								case 1 : 
+ 									for(User list: admin.getAll()) {
+ 										System.out.println(list.toString());
+ 									}
+ 									break;
+ 								case 2 : for(Participation list: admin.getAllParticipation()) {
+ 									System.out.println(list.toString());}
+ 									break;
+ 								case 3 :System.out.println(" Enter the Email adress");
+ 								boolean b = false;
+ 								String email;
+ 									do { 
+ 										email = menu.next();
+ 										b = method.validateEmail(email);
+ 										if (!b) {
+ 											System.out.println(ErrorMessages.EMAILINVALID.SHOW());
+ 										}
+           
+ 									} while(a==false);
+ 					System.out.println(admin.findParticipationByEmail(email).toString());
+ 					System.out.println(" You want to validate this participation ? :");
+ 					System.out.println(" 1- YES");
+ 					System.out.println(" 2- NO");
+ 					int v = menu.nextInt();
+					while (vBack) {
+							switch(v) {
+							case 1 : 
+								admin.validateParticipation(admin.findParticipationByEmail(email).getIdUser());
+								 		method.SendMail( "smtp.gmail.com", "465", "projectmailtestyc@gmail.com", "youcode2020", email, "validation participation", "hello,congratulations we accepted your participation ");
+								System.out.println(" validated ");
+								vBack = false;
+							break;
+							case 2 : System.out.println("  did not valited");
 										vBack = false;
-										break;
-										case 2 : System.out.println("  did not valited");
-										vBack = false;
-										break;
-										default : System.out.println("  error");
-										 			}
-										 } 
-									break;
-										case 4 : back1=false;
-										admin.logout();
-										break;
-										} 
-		
-		
-	} 
-			}else System.out.println(" ERROR ");
-		break;
-	default : System.out.println("choose from the betwen the numbers below ! ");
-}
-			}
+							break;
+							default : System.out.println(ErrorMessages.DEFAULTMENUERROR.SHOW());
+							 			}
+							 } 
+						break;
+							case 4 : back1=false;
+							admin.logout();
+							break;
+							} 
+
+
+} 
+}else System.out.println(ErrorMessages.EMAILPASSWORDINVALID.SHOW());
+break;
+default : System.out.println(ErrorMessages.DEFAULTMENUERROR.SHOW());	
+} 
+}menu.close();
 
 }
 }
